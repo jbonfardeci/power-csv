@@ -363,26 +363,26 @@ class PowerCSV{
         return [string]::IsNullOrEmpty($value) -or [string]::IsNullOrWhiteSpace($value) -or $value -match '^(\(null\)|null|n\\a)$';
     }
 
-    [string]_parseNumeric([string]$val){
-        $val = $this._cleanString($val);
+    # [string]_parseNumeric([string]$val){
+    #     $val = $this._cleanString($val);
 
-        if($this._isEmpty($val)){
-            return $null;
-        }
+    #     if($this._isEmpty($val)){
+    #         return $null;
+    #     }
 
-        $isPercent = ($val -match '\%$');
-        $n = ($val -replace '[^0-9\.\-]', '');
-        [decimal]$d = $null;
+    #     $isPercent = ($val -match '\%$');
+    #     $n = ($val -replace '[^0-9\.\-]', '');
+    #     [decimal]$d = $null;
 
-        if([decimal]::TryParse($n, [ref]$d)){
-            if($isPercent){
-                $d = $d/100;
-            }
-            return $d.ToString();
-        }
+    #     if([decimal]::TryParse($n, [ref]$d)){
+    #         if($isPercent){
+    #             $d = $d/100;
+    #         }
+    #         return $d.ToString();
+    #     }
 
-        return $null;
-    }
+    #     return $null;
+    # }
 
     [string]_cleanString($val){
         $val = $val -replace '(^\"|\"$|^\s+|\s+$)', '';
@@ -450,26 +450,24 @@ class PowerCSV{
             return [System.DBNull]::Value;
         }
         
-        [object]$n = $null;
-
         switch($type){
             "System.Int32"{
-                return [System.Convert]::ToInt32($n);
+                return [System.Convert]::ToInt32($val);
             }
             "System.Int64"{
-                return [System.Convert]::ToInt64($n);
+                return [System.Convert]::ToInt64($val);
             }
             "System.Int16" {
-                return [System.Convert]::ToInt16($n);
+                return [System.Convert]::ToInt16($val);
             }
             "System.Double"{
-                return [System.Convert]::ToDouble($n);
+                return [System.Convert]::ToDouble($val);
             }
             "System.Decimal"{
-                return [System.Convert]::ToDecimal($n);
+                return [System.Convert]::ToDecimal($val);
             }
             "System.Single"{
-                return [System.Convert]::ToSingle($n);
+                return [System.Convert]::ToSingle($val);
             }
             "System.Boolean"{
                 if($val -match '(true|yes|1)'){
