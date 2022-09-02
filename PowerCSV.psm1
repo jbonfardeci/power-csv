@@ -226,7 +226,7 @@ class PowerCSV{
         }
         catch [System.Exception]{
             $this.__setError($_);
-            throw [Exception]::new($_);
+            #throw [Exception]::new($_);
         }
         finally{
             $_dataRows.Clear();
@@ -390,6 +390,10 @@ class PowerCSV{
         return $val;
     }
 
+    [string]_cleanNumericString($val){
+        return $val -replace '[^0-9\.\-]', '';
+    }
+
     [string]_cleanColumnName([string]$val){
         if($val -match ('^\d')){
             $val = "_$($val)";
@@ -452,21 +456,27 @@ class PowerCSV{
         
         switch($type){
             "System.Int32"{
+                $val = $this._cleanNumericString($val);
                 return [System.Convert]::ToInt32($val);
             }
             "System.Int64"{
+                $val = $this._cleanNumericString($val);
                 return [System.Convert]::ToInt64($val);
             }
             "System.Int16" {
+                $val = $this._cleanNumericString($val);
                 return [System.Convert]::ToInt16($val);
             }
             "System.Double"{
+                $val = $this._cleanNumericString($val);
                 return [System.Convert]::ToDouble($val);
             }
             "System.Decimal"{
+                $val = $this._cleanNumericString($val);
                 return [System.Convert]::ToDecimal($val);
             }
             "System.Single"{
+                $val = $this._cleanNumericString($val);
                 return [System.Convert]::ToSingle($val);
             }
             "System.Boolean"{
